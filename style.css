@@ -21,31 +21,38 @@ body {
 }
 
 /* Header */
-header {
-    background: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+/* Header */
+header .container {
+    display: flex;
+    justify-content: space-between; /* left and right sides */
+    align-items: center;
 }
-header h1 {
-    display: inline-block;
-    color: #e63946;
-}
+
 nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
-    float: right;
+    margin: 0;
+    padding: 0;
+    justify-content: flex-start; /* left-aligned nav links */
+    float: none; /* remove float */
 }
+
 nav a {
     text-decoration: none;
     color: #1a1a1a;
     font-weight: bold;
     transition: color 0.3s;
 }
+
 nav a:hover {
     color: #e63946;
+}
+
+/* Right side social icons container */
+.header-right {
+    display: flex;
+    gap: 40px;
 }
 
 /* Hero */
@@ -179,6 +186,21 @@ h2 {
 .social-link:hover i {
     transform: scale(1.2);
     color: #457b9d;
+}
+/* Header Social Logos */
+header a{
+    text-decoration: none;
+}
+.nav-right .social-link i {
+    font-size: 25px; /* smaller size */
+    color: #e63946;  /* icon color */
+    margin-left: 20px; /* spacing between icons */
+    transition: transform 0.3s, color 0.3s;
+}
+
+.nav-right .social-link i:hover {
+    transform: scale(1.2); /* hover effect */
+    color: #457b9d;        /* hover color */
 }
 
 /* Typewriter cursor */
