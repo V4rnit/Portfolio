@@ -82,17 +82,17 @@ h2 {
 
 .project-card {
     background: #fff;
-    padding: 25px 20px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s; /* add background transition */
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    background-color: rgb(177, 170, 170); /* off-white on hover */
 }
-
 /* Project Button */
 .project-link {
     display: inline-block;
@@ -149,6 +149,83 @@ h2 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+/* About Grid */
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* About Card */
+.about-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+/* Hover Effect */
+.about-card:hover {
+    transform: translateY(-8px) scale(1.02); /* smooth pop-up */
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    background-color: rgb(177, 170, 170); /* off-white */
+}
+.skills-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center; /* center the skills */
+}
+
+.skills-list li {
+    background: #e63946;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: default;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+/* Hover Effect */
+.skills-list li:hover {
+    transform: translateY(-5px) scale(1.05); /* smooth pop-up effect */
+    background-color: #d62839; /* slightly darker red */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+/* Typewriter cursor */
+.cursor {
+    display: inline-block;
+    width: 2px;
+    background-color: #fff;   /* cursor color */
+    margin-left: 2px;
+    vertical-align: bottom;   /* aligns with text baseline */
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 50px;
+}
+
+.social-link i {
+    font-size: 50px;
+    color: red;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.social-link:hover i {
+    transform: scale(1.2) rotate(10deg);
+    color: #e63946; /* hover color */
+}
 
 /* Responsive */
 @media(max-width: 768px){
