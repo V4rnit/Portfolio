@@ -1,7 +1,8 @@
 const texts = [
   "Aspiring Software Engineer",
   "Student",
-  "Teaching Assistant"
+  "Teaching Assistant",
+  "Leetcode Enthusiast"
 ];
 
 let count = 0;      // current text index
