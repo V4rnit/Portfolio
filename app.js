@@ -4,18 +4,23 @@ const videos = [
     document.getElementById('projectVideo2'),
     document.getElementById('projectVideo3')
 ];
-const hoverSign = document.querySelector('.hover-sign');
 
 videos.forEach(video => {
-    video.addEventListener('mouseover', () => {
+    const hoverSign = video.parentElement.querySelector('.hover-sign'); // get hover-sign for this video
+    
+    video.addEventListener('mouseenter', () => {
+        video.muted = true; // required for autoplay
         video.play();
-        hoverSign.classList.add('active');
+        if (hoverSign) hoverSign.classList.add('active');
     });
-    video.addEventListener('mouseout', () => {
+
+    video.addEventListener('mouseleave', () => {
         video.pause();
-        hoverSign.classList.remove('active');
+        video.currentTime = 0; // optional: reset to start
+        if (hoverSign) hoverSign.classList.remove('active');
     });
 });
+
 
 // ---------- Sidebar Toggle ----------
 const sideBar = document.querySelector('.sidebar');
