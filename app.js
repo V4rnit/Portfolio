@@ -32,24 +32,3 @@ closeIcon.addEventListener('click', () => {
     sideBar.classList.add('close-sidebar');
 });
 
-// ---------- Contact Form ----------
-const contactButton = document.querySelector('.contact-box button');
-const fullName = document.querySelector('.contact-box input[type="text"]');
-const email = document.querySelector('.contact-box input[type="email"]');
-const message = document.querySelector('.contact-box .input-message');
-
-contactButton.addEventListener('click', (e) => {
-    e.preventDefault(); // prevent page reload
-
-    if (!fullName.value || !email.value || !message.value) {
-        alert('Please fill in all fields.');
-        return;
-    }
-
-    alert(`Thanks, ${fullName.value}! Your message has been sent.`);
-
-    // Clear the form fields
-    fullName.value = '';
-    email.value = '';
-    message.value = '';
-});
