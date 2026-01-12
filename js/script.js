@@ -33,13 +33,37 @@ const projects = [
   }
 ];
 
-// Skills data
+// Skills data with logo mappings
 const skills = {
-  languages: ["Java", "Python", "C/C++", "SQL (Postgres)", "JavaScript", "HTML/CSS", "Bash"],
-  frameworks: ["React", "Node.js", "JUnit", "WordPress", "Spring Boot"],
-  developerTools: ["Git", "Docker", "Google Cloud Platform", "VS Code", "PyCharm", "IntelliJ", "TMUX", "Vim", "NeoVim"],
-  concepts: ["Multithreading", "CLI", "REST APIs", "JWT Authentication"],
-  librariesTools: ["JWT (jjwt)"]
+  all: [
+    { name: "Java", icon: "openjdk" },
+    { name: "Python", icon: "python" },
+    { name: "C", icon: "c" },
+    { name: "C++", icon: "cplusplus" },
+    { name: "PostgreSQL", icon: "postgresql" },
+    { name: "JavaScript", icon: "javascript" },
+    { name: "HTML5", icon: "html5" },
+    { name: "CSS3", icon: "css3" },
+    { name: "Bash", icon: "gnubash" },
+    { name: "React", icon: "react" },
+    { name: "Node.js", icon: "nodedotjs" },
+    { name: "JUnit", icon: "junit5" },
+    { name: "WordPress", icon: "wordpress" },
+    { name: "Spring Boot", icon: "spring" },
+    { name: "Git", icon: "git" },
+    { name: "Docker", icon: "docker" },
+    { name: "Google Cloud", icon: "googlecloud" },
+    { name: "VS Code", icon: "visualstudiocode" },
+    { name: "PyCharm", icon: "pycharm" },
+    { name: "IntelliJ IDEA", icon: "intellijidea" },
+    { name: "TMUX", icon: "tmux" },
+    { name: "Vim", icon: "vim" },
+    { name: "NeoVim", icon: "neovim" },
+    { name: "MongoDB", icon: "mongodb" },
+    { name: "Express", icon: "express" },
+    { name: "Firebase", icon: "firebase" },
+    { name: "Tailwind CSS", icon: "tailwindcss" }
+  ]
 };
 
 // Experience data
@@ -120,8 +144,24 @@ function printLineWithHTML(html, className = "output") {
 /* -------- BOOT SEQUENCE -------- */
 
 async function bootSequence() {
-  // Welcome message
-  await typeLine("Welcome to Varnit Rawat's Portfolio", TYPE_DELAY, "welcome");
+  const asciiArt = [
+    "$$\\    $$\\                              $$\\   $$\\           $$$$$$$\\                                     $$\\     ",
+    "$$ |   $$ |                             \\__|  $$ |          $$  __$$\\                                    $$ |    ",
+    "$$ |   $$ |$$$$$$\\   $$$$$$\\  $$$$$$$\\  $$\\ $$$$$$\\         $$ |  $$ | $$$$$$\\  $$\\  $$\\  $$\\  $$$$$$\\ $$$$$$\\   ",
+    "\\$$\\  $$  |\\____$$\\ $$  __$$\\ $$  __$$\\ $$ |\\_$$  _|        $$$$$$$  | \\____$$\\ $$ | $$ | $$ | \\____$$\\\\_$$  _|  ",
+    " \\$$\\$$  / $$$$$$$ |$$ |  \\__|$$ |  $$ |$$ |  $$ |          $$  __$$<  $$$$$$$ |$$ | $$ | $$ | $$$$$$$ | $$ |    ",
+    "  \\$$$  / $$  __$$ |$$ |      $$ |  $$ |$$ |  $$ |$$\\       $$ |  $$ |$$  __$$ |$$ | $$ | $$ |$$  __$$ | $$ |$$\\ ",
+    "   \\$  /  \\$$$$$$$ |$$ |      $$ |  $$ |$$ |  \\$$$$  |      $$ |  $$ |\\$$$$$$$ |\\$$$$$\\$$$$  |\\$$$$$$$ | \\$$$$  |",
+    "    \\_/    \\_______|\\__|      \\__|  \\__|\\__|   \\____/       \\__|  \\__| \\_______| \\_____\\____/  \\_______|  \\____/ "
+  ];
+
+  // Display ASCII art instantly
+  for (const line of asciiArt) {
+    printLine(line, "ascii-art");
+  }
+
+  printLine("", "system");
+  await typeLine("Welcome to Varnit Rawat's Terminal Portfolio", TYPE_DELAY, "system");
   await new Promise((resolve) => setTimeout(resolve, LINE_PAUSE));
   await typeLine("Type `help` to see available commands", TYPE_DELAY, "system");
   await new Promise((resolve) => setTimeout(resolve, LINE_PAUSE));
@@ -307,20 +347,68 @@ const commands = {
     terminal.appendChild(img);
     terminal.scrollTop = terminal.scrollHeight;
 
-    // Display all skills quickly with horizontal formatting
-    printLine("Languages: " + skills.languages.join(", "), "output");
-    printLine("", "output");
+    // Create skills slider container
+    const sliderContainer = document.createElement("div");
+    sliderContainer.className = "skills-slider-container";
     
-    printLine("Frameworks: " + skills.frameworks.join(", "), "output");
-    printLine("", "output");
+    const slider = document.createElement("div");
+    slider.className = "skills-slider";
     
-    printLine("Developer Tools: " + skills.developerTools.join(", "), "output");
-    printLine("", "output");
+    // Create two sets of logos for seamless loop
+    const logos = [...skills.all, ...skills.all];
     
-    printLine("Concepts: " + skills.concepts.join(", "), "output");
-    printLine("", "output");
+    logos.forEach(skill => {
+      const logoItem = document.createElement("div");
+      logoItem.className = "skill-logo-item";
+      
+      // Special case for Java - show capital J instead of icon
+      if (skill.icon === "openjdk") {
+        const javaLogo = document.createElement("div");
+        javaLogo.className = "skill-logo skill-logo-text";
+        javaLogo.textContent = "J";
+        logoItem.appendChild(javaLogo);
+      } else {
+        const logoImg = document.createElement("img");
+        // Use jsDelivr CDN for Simple Icons - more reliable format
+        // Format: https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/{icon}.svg
+        // Then we'll apply color filter via CSS
+        logoImg.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${skill.icon}.svg`;
+        logoImg.alt = skill.name;
+        logoImg.className = "skill-logo";
+        
+        let retryCount = 0;
+        logoImg.onerror = function() {
+          retryCount++;
+          // Fallback: try alternative icon names for missing logos
+          const altIcons = {
+            "openjdk": "oracle",
+            "visualstudiocode": "visualstudio", 
+            "css3": "css3"
+          };
+          
+          if (retryCount === 1 && altIcons[skill.icon]) {
+            // Try alternative name once
+            this.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${altIcons[skill.icon]}.svg`;
+          } else {
+            // If still fails, hide image - label will still show
+            this.style.display = 'none';
+          }
+        };
+        logoItem.appendChild(logoImg);
+      }
+      
+      const logoLabel = document.createElement("span");
+      logoLabel.className = "skill-logo-label";
+      logoLabel.textContent = skill.name;
+      
+      logoItem.appendChild(logoLabel);
+      slider.appendChild(logoItem);
+    });
     
-    printLine("Libraries & Tools: " + skills.librariesTools.join(", "), "output");
+    sliderContainer.appendChild(slider);
+    terminal.appendChild(sliderContainer);
+    terminal.scrollTop = terminal.scrollHeight;
+    
     printLine("", "output");
   },
 
