@@ -9,13 +9,13 @@ const LINE_PAUSE = 50;
 const projects = [
   {
     name: "CodeClarity",
-    tech: "React, Node.js, MongoDB",
+    tech: "React, Node.js, Express, MongoDB, REST APIs, JavaScript, HTML/CSS",
     description: "DSA learning platform with simulated interview scenarios",
     link: "https://codeclearity.netlify.app/"
   },
   {
     name: "AlgoPath",
-    tech: "HTML/CSS/JS, React, Tailwind, Node.js, Firebase",
+    tech: "HTML, CSS, JavaScript, React, Tailwind CSS, Node.js, Firebase",
     description: "Algorithm roadmap website with interactive learning paths",
     link: "https://v4rnit.github.io/AlgoPath/"
   },
@@ -239,35 +239,82 @@ const commands = {
       terminal.appendChild(img);
       terminal.scrollTop = terminal.scrollHeight;
 
+      // Tech to icon mapping
+      const techToIcon = {
+        "React": "react",
+        "Node.js": "nodedotjs",
+        "Express": "express",
+        "MongoDB": "mongodb",
+        "HTML": "html5",
+        "HTML5": "html5",
+        "CSS": "css3",
+        "CSS3": "css3",
+        "JavaScript": "javascript",
+        "JS": "javascript",
+        "Tailwind": "tailwindcss",
+        "Tailwind CSS": "tailwindcss",
+        "Firebase": "firebase",
+        "Java": "openjdk",
+        "Linux": "linux"
+      };
+
+      // Function to parse tech stack and get icons
+      function getTechIcons(techString) {
+        const icons = [];
+        // Split by comma, slash, or "and"
+        const techArray = techString.split(/[,\/]| and /i).map(t => t.trim()).filter(t => t.length > 0);
+        
+        techArray.forEach(tech => {
+          // Skip non-icon techs (like "Multithreading", "File I/O", JWT, CLI, REST APIs, etc.)
+          const skipTerms = ["multithreading", "file i/o", "file i", "i/o", "cli", "jwt", "rest apis", "rest api", "apis", "api"];
+          if (skipTerms.some(term => tech.toLowerCase().includes(term))) {
+            return;
+          }
+          
+          // Try exact match first
+          if (techToIcon[tech]) {
+            icons.push({ name: tech, icon: techToIcon[tech] });
+          } else {
+            // Try partial matches
+            let matched = false;
+            for (const [key, icon] of Object.entries(techToIcon)) {
+              if (tech.toLowerCase().includes(key.toLowerCase()) || key.toLowerCase().includes(tech.toLowerCase())) {
+                icons.push({ name: tech, icon: icon });
+                matched = true;
+                break;
+              }
+            }
+            // If no match found, try to extract main tech name
+            if (!matched) {
+              // Handle cases like "Node.js" when we have "Node"
+              const normalized = tech.toLowerCase().replace(/[^a-z0-9]/g, '');
+              for (const [key, icon] of Object.entries(techToIcon)) {
+                const keyNormalized = key.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (normalized.includes(keyNormalized) || keyNormalized.includes(normalized)) {
+                  icons.push({ name: tech, icon: icon });
+                  matched = true;
+                  break;
+                }
+              }
+            }
+          }
+        });
+        
+        return icons;
+      }
+
       // List all projects
       await typeLine("Projects:", TYPE_DELAY, "output");
       await new Promise((resolve) => setTimeout(resolve, LINE_PAUSE));
       
       for (let i = 0; i < projects.length; i++) {
         const project = projects[i];
-        const prefix = `[${i + 1}] `;
-        const padding = " ".repeat(Math.max(0, 20 - project.name.length));
-        const suffix = ` - ${project.description}`;
         
-        // Create div for the line
-        const div = document.createElement("div");
-        div.className = "line output";
-        terminal.appendChild(div);
+        // Create container for project line
+        const projectLine = document.createElement("div");
+        projectLine.className = "line output project-line";
+        terminal.appendChild(projectLine);
         terminal.scrollTop = terminal.scrollHeight;
-
-        // Type prefix
-        let idx = 0;
-        await new Promise((resolve) => {
-          const interval = setInterval(() => {
-            if (idx <= prefix.length) {
-              div.textContent = prefix.slice(0, idx);
-              idx++;
-            } else {
-              clearInterval(interval);
-              resolve();
-            }
-          }, TYPE_DELAY);
-        });
 
         // Add clickable link for project name
         const link = document.createElement("a");
@@ -275,13 +322,62 @@ const commands = {
         link.textContent = project.name;
         link.target = "_blank";
         link.rel = "noopener noreferrer";
-        div.appendChild(link);
+        projectLine.appendChild(link);
         
-        // Add spacing and description
-        const rest = document.createTextNode(padding + suffix);
-        div.appendChild(rest);
+        // Add colon
+        const colon = document.createTextNode(": ");
+        projectLine.appendChild(colon);
+        
+        // Get tech icons for this project
+        const techIcons = getTechIcons(project.tech);
+        
+        if (techIcons.length > 0) {
+          // Create slider container
+          const sliderContainer = document.createElement("div");
+          sliderContainer.className = "project-slider-container";
+          
+          const slider = document.createElement("div");
+          slider.className = "project-slider";
+          
+          // Use logos once (no duplication needed for static display)
+          const allLogos = techIcons;
+          
+          allLogos.forEach(tech => {
+            const logoItem = document.createElement("div");
+            logoItem.className = "project-logo-item";
+            
+            if (tech.name === "Java") {
+              // Special handling for Java to display 'J'
+              const textLogo = document.createElement("div");
+              textLogo.className = "skill-logo-text";
+              textLogo.textContent = "J";
+              logoItem.appendChild(textLogo);
+            } else {
+              const logoImg = document.createElement("img");
+              logoImg.src = `https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/${tech.icon}.svg`;
+              logoImg.alt = tech.name;
+              logoImg.className = "project-logo";
+              
+              logoImg.onerror = function() {
+                // Hide image if it fails to load
+                this.style.display = 'none';
+              };
+              logoItem.appendChild(logoImg);
+            }
+            
+            const logoLabel = document.createElement("span");
+            logoLabel.className = "project-logo-label";
+            logoLabel.textContent = tech.name;
+            
+            logoItem.appendChild(logoLabel);
+            slider.appendChild(logoItem);
+          });
+          
+          sliderContainer.appendChild(slider);
+          projectLine.appendChild(sliderContainer);
+        }
+        
         terminal.scrollTop = terminal.scrollHeight;
-        
         await new Promise((resolve) => setTimeout(resolve, LINE_PAUSE));
       }
       

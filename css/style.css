@@ -187,6 +187,18 @@ body {
   color: #00ff9c;
 }
 
+.line.output.project-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  width: 100%;
+}
+
+.line.output.project-line > a {
+  flex-shrink: 0;
+}
+
 .line.error {
   color: #ff6b6b;
 }
@@ -368,6 +380,51 @@ body {
   color: #00ff9c;
   padding-left: 16px;
 }
+
+.project-slider-container {
+  margin-left: 8px;
+  padding: 0;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  flex: 1;
+  min-width: 0;
+}
+
+.project-slider {
+  display: flex;
+  gap: 40px;
+  width: fit-content;
+}
+
+.project-logo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.project-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: brightness(0) saturate(100%) invert(67%) sepia(95%) saturate(500%) hue-rotate(120deg) brightness(105%);
+  transition: transform 0.3s ease;
+}
+
+.project-logo:hover {
+  transform: scale(1.1);
+}
+
+.project-logo-label {
+  color: #00ff9c;
+  font-size: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
 
 /* -------- RESPONSIVE -------- */
 
